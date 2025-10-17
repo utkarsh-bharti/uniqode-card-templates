@@ -1,0 +1,89 @@
+{
+  "name": "@uniqode/card-templates",
+  "version": "1.0.0",
+  "description": "Universal card layout components for Uniqode/Beaconstac applications",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "browser": "lib/bundle.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:components && npm run build:bundle",
+    "build:components": "node tools/build.js",
+    "build:bundle": "webpack --mode=production",
+    "build:dev": "webpack --mode=development --watch",
+    "clean": "rimraf lib/",
+    "dev": "node tools/dev-server.js",
+    "dev:react": "cd dev-app && npm run dev",
+    "build:dev": "npm run build && cp lib/bundle.js lib/card-layout-1.js dev-app/public/",
+    "start": "npm run dev",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:e2e": "playwright test",
+    "lint": "eslint src/ --ext .js",
+    "lint:fix": "eslint src/ --ext .js --fix",
+    "format": "prettier --write src/ examples/ tools/",
+    "format:check": "prettier --check src/ examples/ tools/",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run build",
+    "release": "node tools/release.js"
+  },
+  "keywords": [
+    "web-components",
+    "custom-elements",
+    "card-templates",
+    "uniqode",
+    "beaconstac",
+    "digital-business-cards",
+    "vcard",
+    "templates"
+  ],
+  "author": "Uniqode Team <dev@uniqode.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniqode/card-templates.git"
+  },
+  "bugs": {
+    "url": "https://github.com/uniqode/card-templates/issues"
+  },
+  "homepage": "https://github.com/uniqode/card-templates#readme",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@playwright/test": "^1.40.0",
+    "@types/jest": "^29.5.0",
+    "babel-loader": "^9.1.0",
+    "css-loader": "^6.8.0",
+    "eslint": "^8.50.0",
+    "express": "^4.18.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.0.0",
+    "rimraf": "^5.0.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "peerDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.8.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}
+

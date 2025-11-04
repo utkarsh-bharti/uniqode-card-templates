@@ -345,12 +345,3 @@ export default {
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🆘 Support
-
-- 📧 Email: dev@uniqode.com
-- 🐛 Issues: [GitHub Issues](https://github.com/uniqode/card-templates/issues)
-- 📖 Documentation: [Full Documentation](https://docs.uniqode.com/card-templates)
-
----
-
-Made with ❤️ by the Uniqode Team

@@ -8,10 +8,16 @@
 
 // Import all component classes
 import { CardLayout1 } from './components/card-layout-1/CardLayout1.js';
-// import { CardLayout2 } from './components/card-layout-2/CardLayout2.js';
-// import { CardLayout4 } from './components/card-layout-4/CardLayout4.js';
-// import { CardLayout5 } from './components/card-layout-5/CardLayout5.js';
-// import { CardLayout6 } from './components/card-layout-6/CardLayout6.js';
+import { CardLayout2 } from './components/card-layout-2/CardLayout2.js';
+import { CardLayout3 } from './components/card-layout-3/CardLayout3.js';
+import { CardLayout4 } from './components/card-layout-4/CardLayout4.js';
+import { CardLayout5 } from './components/card-layout-5/CardLayout5.js';
+import { CardLayout6 } from './components/card-layout-6/CardLayout6.js';
+import { CardLayout7 } from './components/card-layout-7/CardLayout7.js';
+import { CardLayout8 } from './components/card-layout-8/CardLayout8.js';
+import { CardLayout9 } from './components/card-layout-9/CardLayout9.js';
+import { CardLayout11 } from './components/card-layout-11/CardLayout11.js';
+import { CardLayoutComprehensive } from './components/card-layout-comprehensive/CardLayoutComprehensive.js';
 
 // Import base class
 import { BaseCard } from './components/base/BaseCard.js';
@@ -34,10 +40,16 @@ export const LIBRARY_INFO = {
 export {
   BaseCard,
   CardLayout1,
-  // CardLayout2,
-  // CardLayout4,
-  // CardLayout5,
-  // CardLayout6
+  CardLayout2,
+  CardLayout3,
+  CardLayout4,
+  CardLayout5,
+  CardLayout6,
+  CardLayout7,
+  CardLayout8,
+  CardLayout9,
+  CardLayout11,
+  CardLayoutComprehensive
 };
 
 // Utility exports
@@ -72,11 +84,17 @@ const shouldAutoRegister = typeof window !== 'undefined' &&
 if (shouldAutoRegister) {
   console.log(`🎉 ${LIBRARY_INFO.name} v${LIBRARY_INFO.version} loaded`);
   console.log('📦 Available components:', [
-    'uniqode-card-layout-1'
-    // 'uniqode-card-layout-2',
-    // 'uniqode-card-layout-4',
-    // 'uniqode-card-layout-5',
-    // 'uniqode-card-layout-6'
+    'uniqode-layout-1',
+    'uniqode-layout-2',
+    'uniqode-layout-3',
+    'uniqode-layout-4',
+    'uniqode-layout-5',
+    'uniqode-layout-6',
+    'uniqode-layout-7',
+    'uniqode-layout-8',
+    'uniqode-layout-9',
+    'uniqode-layout-11',
+    'uniqode-layout-comprehensive'
   ]);
 }
 
@@ -87,10 +105,16 @@ if (typeof window !== 'undefined') {
     components: {
       BaseCard,
       CardLayout1,
-      // CardLayout2,
-      // CardLayout4,
-      // CardLayout5,
-      // CardLayout6
+      CardLayout2,
+      CardLayout3,
+      CardLayout4,
+      CardLayout5,
+      CardLayout6,
+      CardLayout7,
+      CardLayout8,
+      CardLayout9,
+      CardLayout11,
+      CardLayoutComprehensive
     },
     utils: {
       ColorUtils,
@@ -105,7 +129,17 @@ export default {
   ...LIBRARY_INFO,
   components: {
     BaseCard,
-    CardLayout1
+    CardLayout1,
+    CardLayout2,
+    CardLayout3,
+    CardLayout4,
+    CardLayout5,
+    CardLayout6,
+    CardLayout7,
+    CardLayout8,
+    CardLayout9,
+    CardLayout11,
+    CardLayoutComprehensive
   },
   utils: {
     ColorUtils,

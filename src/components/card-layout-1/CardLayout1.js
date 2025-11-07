@@ -541,6 +541,6 @@ export class CardLayout1 extends BaseCard {
 }
 
 // Register the Web Component
-customElements.define('uniqode-card-layout-1', CardLayout1);
+customElements.define('uniqode-layout-1', CardLayout1);
 
 export default CardLayout1;

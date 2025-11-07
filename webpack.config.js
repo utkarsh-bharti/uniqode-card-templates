@@ -1,92 +1,56 @@
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-module.exports = (env, argv) => {
-  const isProduction = argv.mode === 'production';
-  
-  return {
-    entry: {
-      // Individual components (only existing ones)
-      'card-layout-1': './src/components/card-layout-1/CardLayout1.js',
-      // Complete bundle
-      'bundle': './src/index.js'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default {
+  mode: 'production',
+  entry: {
+    // Main bundle with all components
+    index: './src/index.js',
+    // Individual component bundles for selective loading
+    'card-layout-1': './src/components/card-layout-1/CardLayout1.js',
+    'card-layout-2': './src/components/card-layout-2/CardLayout2.js',
+    'card-layout-3': './src/components/card-layout-3/CardLayout3.js',
+    'card-layout-4': './src/components/card-layout-4/CardLayout4.js',
+    'card-layout-5': './src/components/card-layout-5/CardLayout5.js',
+    'card-layout-6': './src/components/card-layout-6/CardLayout6.js',
+    'card-layout-7': './src/components/card-layout-7/CardLayout7.js',
+    'card-layout-8': './src/components/card-layout-8/CardLayout8.js',
+    'card-layout-9': './src/components/card-layout-9/CardLayout9.js',
+    'card-layout-11': './src/components/card-layout-11/CardLayout11.js',
+    'card-layout-comprehensive': './src/components/card-layout-comprehensive/CardLayoutComprehensive.js'
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    library: {
+      type: 'module'
     },
-    
-    output: {
-      path: path.resolve(__dirname, 'lib'),
-      filename: '[name].js',
-      library: {
-        type: 'umd',
-        name: 'UniqodeCardTemplates'
-      },
-      globalObject: 'this',
-      clean: true
-    },
-    
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: 'babel-loader',
-            options: {
-              presets: [
-                ['@babel/preset-env', {
-                  targets: {
-                    browsers: ['> 1%', 'last 2 versions', 'not dead']
-                  },
-                  modules: false
-                }]
-              ]
-            }
-          }
-        },
-        {
-          test: /\.css$/,
-          use: [
-            'style-loader',
-            'css-loader'
-          ]
-        }
-      ]
-    },
-    
-    optimization: {
-      minimize: isProduction,
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          shared: {
-            name: 'shared',
-            chunks: 'all',
-            minChunks: 2
+    clean: true
+  },
+  experiments: {
+    outputModule: true
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
           }
         }
       }
-    },
-    
-    devtool: isProduction ? 'source-map' : 'eval-source-map',
-    
-    devServer: {
-      static: {
-        directory: path.join(__dirname, 'examples'),
-      },
-      port: 3001,
-      hot: true,
-      open: true,
-      compress: true,
-      historyApiFallback: true
-    },
-    
-    resolve: {
-      extensions: ['.js', '.css'],
-      alias: {
-        '@': path.resolve(__dirname, 'src'),
-        '@components': path.resolve(__dirname, 'src/components'),
-        '@shared': path.resolve(__dirname, 'src/shared'),
-        '@styles': path.resolve(__dirname, 'src/styles')
-      }
-    }
-  };
+    ]
+  },
+  optimization: {
+    splitChunks: false // Keep each bundle separate
+  },
+  externals: {
+    // Don't bundle these - they should be provided by the consuming application
+  }
 };
-

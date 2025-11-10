@@ -20,6 +20,7 @@ export default {
     'card-layout-8': './src/components/card-layout-8/CardLayout8.js',
     'card-layout-9': './src/components/card-layout-9/CardLayout9.js',
     'card-layout-11': './src/components/card-layout-11/CardLayout11.js',
+    'card-layout-12': './src/components/card-layout-12/CardLayout12.js',
     'card-layout-comprehensive': './src/components/card-layout-comprehensive/CardLayoutComprehensive.js'
   },
   output: {
@@ -28,7 +29,9 @@ export default {
     library: {
       type: 'module'
     },
-    clean: true
+    clean: {
+      keep: /\.d\.ts$/,  // Keep TypeScript definition files
+    }
   },
   experiments: {
     outputModule: true

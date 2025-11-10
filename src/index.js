@@ -17,6 +17,7 @@ import { CardLayout7 } from './components/card-layout-7/CardLayout7.js';
 import { CardLayout8 } from './components/card-layout-8/CardLayout8.js';
 import { CardLayout9 } from './components/card-layout-9/CardLayout9.js';
 import { CardLayout11 } from './components/card-layout-11/CardLayout11.js';
+import { CardLayout12 } from './components/card-layout-12/CardLayout12.js';
 import { CardLayoutComprehensive } from './components/card-layout-comprehensive/CardLayoutComprehensive.js';
 
 // Import base class
@@ -49,6 +50,7 @@ export {
   CardLayout8,
   CardLayout9,
   CardLayout11,
+  CardLayout12,
   CardLayoutComprehensive
 };
 
@@ -94,6 +96,7 @@ if (shouldAutoRegister) {
     'uniqode-layout-8',
     'uniqode-layout-9',
     'uniqode-layout-11',
+    'uniqode-layout-12',
     'uniqode-layout-comprehensive'
   ]);
 }
@@ -114,6 +117,7 @@ if (typeof window !== 'undefined') {
       CardLayout8,
       CardLayout9,
       CardLayout11,
+      CardLayout12,
       CardLayoutComprehensive
     },
     utils: {
@@ -139,6 +143,7 @@ export default {
     CardLayout8,
     CardLayout9,
     CardLayout11,
+    CardLayout12,
     CardLayoutComprehensive
   },
   utils: {

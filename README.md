@@ -2,25 +2,25 @@
 
 [![npm version](https://badge.fury.io/js/@uniqode%2Fcard-templates.svg)](https://badge.fury.io/js/@uniqode%2Fcard-templates)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://github.com/uniqode/card-templates/workflows/CI/badge.svg)](https://github.com/uniqode/card-templates/actions)
 
-> Universal Web Components library for digital business card templates. Framework-agnostic, customizable, and production-ready.
+> Production-grade Web Components library for digital business card templates. Framework-agnostic, data-driven, and battle-tested.
 
 ## 🎯 Overview
 
-`@uniqode/card-templates` is a comprehensive Web Components library that provides 11 professionally designed digital business card layouts. Built with modern web standards, it works seamlessly with any framework (React, Angular, Vue, Vanilla JS) and offers extensive customization options.
+`@uniqode/card-templates` provides professionally designed digital business card layouts as framework-agnostic Web Components. Built with modern web standards, it works seamlessly with any framework (React, Angular, Vue, Django, plain JavaScript) and offers production-grade data handling with comprehensive event system.
 
-## ✨ Features
+## ✨ Key Features
 
-- **🌐 Framework Agnostic** - Works with React, Angular, Vue, Svelte, or vanilla JavaScript
-- **🎨 11 Professional Layouts** - Diverse designs for different business needs
-- **🔧 Fully Customizable** - Colors, fonts, styling, and data fields
-- **📱 Responsive Design** - Mobile-first approach with perfect scaling
+- **🌐 Framework Agnostic** - Works with React, Angular, Vue, Django, Express, or vanilla JavaScript
+- **📊 Data-Driven Rendering** - Pass data declaratively via properties or attributes
+- **🎭 Production-Grade Events** - Comprehensive event system with `preventDefault` support
 - **🔒 Shadow DOM Encapsulation** - No style conflicts with your application
-- **⚡ Lightweight** - Individual components (13-29KB) or full bundle (148KB)
+- **⚡ Lightweight** - Individual components (~30KB) or full bundle
+- **🎨 Fully Customizable** - Colors, fonts, styling, and data fields
+- **📱 Responsive Design** - Mobile-first approach with perfect scaling
 - **🎭 TypeScript Ready** - Full type definitions included
 - **♿ Accessible** - WCAG compliant components
-- **🚀 Production Ready** - Thoroughly tested and optimized
+- **🚀 Production Ready** - Used in production by Uniqode/Beaconstac
 
 ## 📦 Installation
 
@@ -37,33 +37,48 @@ pnpm add @uniqode/card-templates
 
 ## 🚀 Quick Start
 
-### Vanilla JavaScript
+### Vanilla JavaScript / HTML
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
-  <script type="module">
-    import '@uniqode/card-templates';
-  </script>
+  <script type="module" src="https://unpkg.com/@uniqode/card-templates@latest/dist/card-layout-12.js"></script>
 </head>
 <body>
-  <uniqode-layout-1 id="myCard"></uniqode-layout-1>
+  <uniqode-layout-12 id="myCard"></uniqode-layout-12>
   
   <script>
-    const card = document.getElementById('myCard');
-    card.cardData = {
-      first_name: 'John',
-      last_name: 'Doe',
-      designation: 'Software Engineer',
-      company: 'Tech Corp',
-      email_v2: [{ value: 'john@techcorp.com', label: 'Work' }],
-      phone_v2: [{ value: '+1 (555) 123-4567', label: 'Mobile' }],
-      customizations: {
-        background_color: '#007bff',
-        user_info_color: '#333333'
-      }
-    };
+    // Wait for component to be defined
+    customElements.whenDefined('uniqode-layout-12').then(() => {
+      const card = document.getElementById('myCard');
+      
+      // Set data via property (recommended)
+      card.cardData = {
+        first_name: 'John',
+        last_name: 'Doe',
+        designation: 'Software Engineer',
+        company: 'Tech Corp',
+        email_v2: [{ value: 'john@techcorp.com', label: 'Work' }],
+        phone_v2: [{ value: '+1 (555) 123-4567', label: 'Mobile' }],
+        user_image_url: 'https://i.pravatar.cc/300',
+        customizations: {
+          background_color: '#131A40',
+          primary_color: '#84E9F1',
+          button_color: '#6366F1'
+        }
+      };
+      
+      // Listen for events
+      card.addEventListener('contact-click', (e) => {
+        console.log('Contact clicked:', e.detail);
+      });
+      
+      card.addEventListener('share', (e) => {
+        console.log('Share clicked:', e.detail);
+        // e.preventDefault(); // Prevent default share action
+      });
+    });
   </script>
 </body>
 </html>
@@ -79,12 +94,42 @@ function BusinessCard({ cardData }) {
   const cardRef = useRef(null);
   
   useEffect(() => {
-    if (cardRef.current) {
-      cardRef.current.cardData = cardData;
-    }
+    const element = cardRef.current;
+    if (!element) return;
+
+    // Set data via property (declarative)
+    element.cardData = cardData;
+
+    // Attach event listeners
+    const handleContactClick = (e) => {
+      console.log('Contact clicked:', e.detail);
+    };
+
+    const handleShare = (e) => {
+      console.log('Share clicked:', e.detail);
+      // e.preventDefault(); // Optional: override default behavior
+    };
+
+    element.addEventListener('contact-click', handleContactClick);
+    element.addEventListener('share', handleShare);
+
+    // Cleanup
+    return () => {
+      element.removeEventListener('contact-click', handleContactClick);
+      element.removeEventListener('share', handleShare);
+    };
   }, [cardData]);
   
-  return <uniqode-layout-1 ref={cardRef} />;
+  return <uniqode-layout-12 ref={cardRef} />;
+}
+
+// TypeScript support: Add to global.d.ts
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'uniqode-layout-12': React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<any> };
+    }
+  }
 }
 ```
 
@@ -99,45 +144,199 @@ import '@uniqode/card-templates';
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 
-// component.html
-<uniqode-layout-1 [cardData]="cardData"></uniqode-layout-1>
+// component.ts
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+
+@Component({
+  selector: 'app-business-card',
+  template: '<uniqode-layout-12 #card></uniqode-layout-12>'
+})
+export class BusinessCardComponent implements AfterViewInit {
+  @ViewChild('card') cardElement!: ElementRef;
+
+  ngAfterViewInit() {
+    const card = this.cardElement.nativeElement;
+    
+    // Set data
+    card.cardData = {
+      first_name: 'John',
+      last_name: 'Doe',
+      // ... more data
+    };
+
+    // Listen for events
+    card.addEventListener('contact-click', (e: any) => {
+      console.log('Contact clicked:', e.detail);
+    });
+  }
+}
 ```
 
-### Vue
+### Vue 3
 
 ```vue
 <template>
-  <uniqode-layout-1 :card-data="cardData" />
+  <uniqode-layout-12 ref="cardRef"></uniqode-layout-12>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue';
 import '@uniqode/card-templates';
+
+const cardRef = ref(null);
 
 const cardData = {
   first_name: 'John',
   last_name: 'Doe',
+  designation: 'Software Engineer',
   // ... more data
 };
+
+onMounted(() => {
+  const card = cardRef.value;
+  
+  // Set data
+  card.cardData = cardData;
+  
+  // Listen for events
+  card.addEventListener('contact-click', (e) => {
+    console.log('Contact clicked:', e.detail);
+  });
+});
 </script>
 ```
 
-## 🎨 Available Layouts
+### Django (Server-Side)
 
-| Layout | Description | Best For |
-|--------|-------------|----------|
-| `uniqode-layout-1` | Professional centered card | Corporate professionals |
-| `uniqode-layout-2` | Two-column with profile image | Sales & marketing |
-| `uniqode-layout-3` | Modern card with social focus | Social media influencers |
-| `uniqode-layout-4` | SVG clipped profile design | Creative professionals |
-| `uniqode-layout-5` | Split section with header | Executives & managers |
-| `uniqode-layout-6` | Clean centered with logo | Small business owners |
-| `uniqode-layout-7` | Minimalist design | Consultants & freelancers |
-| `uniqode-layout-8` | Gradient background | Tech professionals |
-| `uniqode-layout-9` | Sectioned with contact grid | Service providers |
-| `uniqode-layout-11` | Premium with contact actions | Enterprise professionals |
-| `uniqode-layout-comprehensive` | All data fields showcase | Testing & development |
+#### Method 1: Data Island Pattern (Recommended)
 
-## 📋 Data Structure
+```django
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="{% static 'js/uniqode-card-templates/card-layout-12.js' %}"></script>
+</head>
+<body>
+    <!-- Web Component -->
+    <uniqode-layout-12 data-source="#card-data"></uniqode-layout-12>
+    
+    <!-- Data Island (JSON) -->
+    {{ card_data|json_script:"card-data" }}
+    
+    <script>
+        // Listen for events
+        document.querySelector('uniqode-layout-12').addEventListener('contact-click', (e) => {
+            console.log('Contact clicked:', e.detail);
+            
+            // Send to backend
+            fetch('/api/track-contact-click/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(e.detail)
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
+```python
+# views.py
+from django.shortcuts import render
+from django.http import JsonResponse
+
+def card_view(request, card_id):
+    # Fetch card data from database
+    card = DigitalCard.objects.get(id=card_id)
+    
+    # Transform to component format
+    card_data = {
+        'first_name': card.first_name,
+        'last_name': card.last_name,
+        'designation': card.designation,
+        'company': card.company,
+        'email_v2': [{'value': e.email, 'label': e.label} for e in card.emails.all()],
+        'phone_v2': [{'value': p.phone, 'label': p.label} for p in card.phones.all()],
+        'user_image_url': card.profile_image.url if card.profile_image else None,
+        'customizations': card.get_customizations(),
+    }
+    
+    return render(request, 'card_template.html', {'card_data': card_data})
+```
+
+#### Method 2: Direct Property Setting
+
+```django
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="module" src="{% static 'js/uniqode-card-templates/card-layout-12.js' %}"></script>
+</head>
+<body>
+    <uniqode-layout-12 id="card"></uniqode-layout-12>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            customElements.whenDefined('uniqode-layout-12').then(() => {
+                const card = document.getElementById('card');
+                
+                // Set data from Django template context
+                card.cardData = {{ card_data|safe }};
+                
+                // Event handlers
+                card.addEventListener('contact-click', (e) => {
+                    console.log('Contact clicked:', e.detail);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
+### Express.js / Node.js (Server-Side)
+
+```javascript
+// server.js
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+
+const app = express();
+
+// Serve the Web Component bundle
+app.use('/static', express.static('node_modules/@uniqode/card-templates/dist'));
+
+app.get('/card/:id', async (req, res) => {
+    // Fetch card data from database
+    const cardData = await db.getCard(req.params.id);
+    
+    // Render HTML with embedded data
+    res.send(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <script type="module" src="/static/card-layout-12.js"></script>
+        </head>
+        <body>
+            <uniqode-layout-12 id="card"></uniqode-layout-12>
+            
+            <script>
+                customElements.whenDefined('uniqode-layout-12').then(() => {
+                    document.getElementById('card').cardData = ${JSON.stringify(cardData)};
+                });
+            </script>
+        </body>
+        </html>
+    `);
+});
+
+app.listen(3000);
+```
+
+## 📊 Data Structure
 
 ```javascript
 const cardData = {
@@ -165,6 +364,9 @@ const cardData = {
     { value: 'https://johndoe.dev', label: 'Portfolio' }
   ],
   
+  // Address
+  address_v2: '123 Tech Street, San Francisco, CA 94105',
+  
   // Social Media Links
   social_links: {
     linkedin: 'https://linkedin.com/in/johndoe',
@@ -172,7 +374,9 @@ const cardData = {
     instagram: 'https://instagram.com/johndoe',
     facebook: 'https://facebook.com/johndoe',
     github: 'https://github.com/johndoe',
-    youtube: 'https://youtube.com/@johndoe'
+    youtube: 'https://youtube.com/@johndoe',
+    twitch: 'https://twitch.tv/johndoe',
+    discord: 'https://discord.gg/johndoe'
   },
   
   // Media
@@ -181,32 +385,124 @@ const cardData = {
   
   // Customization
   customizations: {
-    background_color: '#007bff',
-    user_info_color: '#333333',
-    secondary_color: '#666666',
-    button_color: '#007bff',
-    icon_color: '#007bff',
-    font_style: 'Work Sans, sans-serif'
+    background_color: '#131A40',
+    primary_color: '#84E9F1',
+    button_color: '#6366F1',
+    icon_color: '#84E9F1',
+    font_style: 'Roboto, sans-serif'
   },
   
-  // Custom Fields
-  custom_fields: [
-    { value: 'Available for consulting', label: 'Note' }
-  ]
+  // Ordering
+  contact_info_ordering: ['phone_v2', 'email_v2', 'website_v2', 'address_v2'],
+  social_links_ordering: ['linkedin', 'twitter', 'github']
 };
 ```
 
-## 🎛️ Customization Options
+## 🎪 Event System
+
+All components emit custom events for user interactions with full `preventDefault` support:
+
+```javascript
+const card = document.querySelector('uniqode-layout-12');
+
+// 1. Contact Click Event
+card.addEventListener('contact-click', (event) => {
+  const { type, value, label } = event.detail;
+  console.log(`Contact clicked: ${type} - ${value}`);
+  
+  // Optional: Prevent default action (e.g., opening email client)
+  event.preventDefault();
+  
+  // Custom handler
+  openCustomModal(type, value);
+});
+
+// 2. Share Event
+card.addEventListener('share', (event) => {
+  const { cardData } = event.detail;
+  console.log('Card share requested');
+  
+  // Optional: Prevent default share dialog
+  event.preventDefault();
+  
+  // Custom share implementation
+  openCustomShareDialog(cardData);
+});
+
+// 3. Save Contact Event (vCard download)
+card.addEventListener('save-contact', (event) => {
+  const { cardData, vcard } = event.detail;
+  console.log('Save contact triggered');
+  
+  // Optional: Prevent default vCard download
+  event.preventDefault();
+  
+  // Track in analytics
+  analytics.track('contact_saved', { card_id: cardData.id });
+});
+
+// 4. Lead Collect Event
+card.addEventListener('lead-collect', (event) => {
+  const { cardData } = event.detail;
+  console.log('Lead collection triggered');
+  
+  // Send to backend
+  fetch('/api/collect-lead/', {
+    method: 'POST',
+    body: JSON.stringify({ card_id: cardData.id })
+  });
+});
+
+// 5. Social Link Click Event
+card.addEventListener('social-click', (event) => {
+  const { platform, url } = event.detail;
+  console.log(`Social link clicked: ${platform}`);
+  
+  // Track social clicks
+  analytics.track('social_click', { platform });
+});
+
+// 6. Card Ready Event
+card.addEventListener('card-ready', (event) => {
+  console.log('Card rendered and ready');
+  
+  // Hide loading spinner
+  document.querySelector('.loader').style.display = 'none';
+});
+```
+
+### Event Details
+
+| Event | Detail | Cancelable | Description |
+|-------|--------|-----------|-------------|
+| `contact-click` | `{ type, value, label }` | ✅ Yes | User clicked phone/email/website |
+| `share` | `{ cardData }` | ✅ Yes | User clicked share button |
+| `save-contact` | `{ cardData, vcard }` | ✅ Yes | User clicked save to contacts |
+| `lead-collect` | `{ cardData }` | ✅ Yes | User clicked lead collection CTA |
+| `social-click` | `{ platform, url }` | ✅ Yes | User clicked social media link |
+| `card-ready` | `{ layoutId }` | ❌ No | Card finished rendering |
+
+## 🎨 Available Layouts
+
+Currently available layout:
+
+| Layout | Description | Best For |
+|--------|-------------|----------|
+| `uniqode-layout-12` | Modern gaming/tech card with dark theme | Gaming, Tech, Creative professionals |
+
+*More layouts coming soon! The architecture supports easy addition of new layouts.*
+
+## 🎛️ Customization
 
 ### Colors
 
 ```javascript
 customizations: {
-  background_color: '#007bff',    // Primary background color
-  user_info_color: '#333333',    // Text color for names/titles
-  secondary_color: '#666666',    // Secondary text color
-  button_color: '#007bff',       // Action button color
-  icon_color: '#007bff'          // Icon and accent color
+  background_color: '#131A40',    // Primary background
+  primary_color: '#84E9F1',       // Accent/header color
+  button_color: '#6366F1',        // Action button color
+  icon_color: '#84E9F1',          // Icon color
+  font_style: 'Roboto, sans-serif' // Font family
 }
 ```
 
@@ -214,45 +510,61 @@ customizations: {
 
 ```javascript
 customizations: {
-  font_style: 'Inter, sans-serif', // Font family
+  font_style: 'Inter, system-ui, sans-serif',
   typography: {
-    personal_info: {
-      google_font_size: 24,        // Name font size
-      google_font_colour: '#333'   // Name color override
+    user_info: {
+      google_font_size: 24,
+      google_font_colour: '#333'
     },
     company_details: {
-      google_font_size: 16         // Company/title font size
+      google_font_size: 16
     },
     contact_details: {
-      google_font_size: 14         // Contact info font size
+      google_font_size: 14
     }
   }
 }
 ```
 
-## 🎪 Events
+## 🏗️ Architecture
 
-All components emit custom events for user interactions:
+### Component Structure
+
+```
+CardLayout12 (Web Component)
+    ↓
+BaseCard (Enhanced base class)
+    ├── Data Loading (properties, attributes, data islands)
+    ├── Event System (preventDefault support)
+    ├── Rendering Engine
+    └── Utility Methods (vCard, share, etc.)
+```
+
+### CSS Architecture
+
+Components use **CSS-in-JS with Shadow DOM** for true style encapsulation:
 
 ```javascript
-// Listen for contact clicks
-card.addEventListener('contact-click', (event) => {
-  const { type, value, label } = event.detail;
-  console.log(`Contact clicked: ${type} - ${value}`);
-});
+// styles.js - Separate CSS module
+export const styles = `
+  :host { display: block; }
+  .card-container { /* ... */ }
+`;
 
-// Listen for card sharing
-card.addEventListener('card-share', (event) => {
-  const { cardData, layout } = event.detail;
-  console.log('Card shared:', layout);
-});
+// CardLayout12.js - Component imports styles
+import { styles } from './styles.js';
 
-// Listen for lead collection
-card.addEventListener('lead-collect', (event) => {
-  const { cardData } = event.detail;
-  console.log('Lead collect initiated');
-});
+getTemplate() {
+  return `<style>${styles}</style><div>...</div>`;
+}
 ```
+
+**Benefits:**
+- ✅ True encapsulation via Shadow DOM
+- ✅ No style conflicts with consumer app
+- ✅ Single bundle distribution
+- ✅ Maintainable separated CSS
+- ✅ Framework-agnostic
 
 ## 🔧 Development
 
@@ -279,58 +591,66 @@ npm run dev
 
 ```bash
 # Development
-npm run dev              # Start Storybook development server
+npm run dev              # Start Storybook (http://localhost:6006)
 npm start               # Alias for npm run dev
-npm run build:dev       # Build library in watch mode
+npm run build:dev       # Build in watch mode
 
 # Building
-npm run build:lib       # Build the Web Components library
+npm run build:lib       # Build Web Components (outputs to dist/)
 npm run build:storybook # Build Storybook static site
-npm run build          # Build both library and Storybook
+npm run build          # Build both
 
 # Testing & Quality
 npm run test:integration # Run integration tests
 npm run lint            # Lint source code
 npm run lint:fix        # Fix linting issues
 
-# Package Management
-npm run prepublishOnly  # Prepare for npm publishing (auto-runs)
+# Utilities
+npm run size           # Check bundle sizes
+npm run clean          # Clean build artifacts
 ```
 
 ### Project Structure
 
 ```
+uniqode-card-templates/
 ├── src/
-│   ├── components/          # Web Components
-│   │   ├── base/           # BaseCard class
-│   │   ├── card-layout-*/  # Individual layouts
-│   │   └── ...
+│   ├── components/
+│   │   ├── base/
+│   │   │   └── BaseCard.js           # Enhanced base class
+│   │   └── card-layout-12/
+│   │       ├── CardLayout12.js       # Component logic
+│   │       ├── styles.js             # Separate CSS module
+│   │       └── CardLayout12.stories.js
 │   ├── shared/
-│   │   └── utils/          # Utility functions
-│   └── index.js            # Main entry point
-├── dist/                   # Built files
-├── test/                   # Integration tests
-├── .storybook/            # Storybook configuration
-└── storybook-static/      # Built Storybook
+│   │   └── utils/                    # Utility functions
+│   ├── types/                        # TypeScript definitions
+│   ├── index.js                      # Main entry point
+│   └── Introduction.stories.js       # Storybook welcome
+├── dist/                             # Built files
+│   ├── card-layout-12.js            # Individual bundle
+│   ├── index.js                     # Full bundle
+│   └── index.d.ts                   # TypeScript definitions
+├── test/                            # Integration tests
+├── .storybook/                      # Storybook config
+├── webpack.config.js                # Webpack config
+└── package.json
 ```
 
 ## 📊 Bundle Sizes
 
-| Bundle | Size (Minified) | Description |
-|--------|----------------|-------------|
-| `index.js` | 148KB | Complete library with all components |
-| `card-layout-1.js` | 24KB | Individual Layout 1 component |
-| `card-layout-2.js` | 29KB | Individual Layout 2 component |
-| `card-layout-3.js` | 25KB | Individual Layout 3 component |
-| ... | 13-29KB | Other individual components |
+| Bundle | Size | Description |
+|--------|------|-------------|
+| `card-layout-12.js` | ~30KB | Individual Layout 12 component |
+| `index.js` | ~35KB | Full bundle with all layouts |
 
 ### Tree Shaking
 
-Import only the components you need:
+Import only what you need:
 
 ```javascript
 // Import specific component (recommended)
-import '@uniqode/card-templates/dist/card-layout-1.js';
+import '@uniqode/card-templates/dist/card-layout-12.js';
 
 // Import all components
 import '@uniqode/card-templates';
@@ -353,53 +673,94 @@ For older browsers, include the Web Components polyfill:
 ## 🔗 CDN Usage
 
 ```html
-<!-- Load from CDN -->
+<!-- Full bundle -->
 <script type="module" src="https://unpkg.com/@uniqode/card-templates@latest/dist/index.js"></script>
 
-<!-- Or specific component -->
-<script type="module" src="https://unpkg.com/@uniqode/card-templates@latest/dist/card-layout-1.js"></script>
+<!-- Individual component (recommended) -->
+<script type="module" src="https://unpkg.com/@uniqode/card-templates@latest/dist/card-layout-12.js"></script>
+```
+
+## 🚀 Production Deployment
+
+### Django Static Files
+
+```bash
+# Copy built files to Django static directory
+cp node_modules/@uniqode/card-templates/dist/*.js \
+   your_project/static/js/uniqode-card-templates/
+
+# Collect static
+python manage.py collectstatic --noinput
+```
+
+### CDN Integration
+
+```python
+# settings.py
+UNIQODE_TEMPLATES_VERSION = "1.0.0"
+UNIQODE_TEMPLATES_CDN = f"https://cdn.example.com/uniqode-templates/{UNIQODE_TEMPLATES_VERSION}"
+
+# template.html
+<script type="module" src="{{ UNIQODE_TEMPLATES_CDN }}/card-layout-12.js"></script>
+```
+
+### Security Considerations
+
+```html
+<!-- Subresource Integrity (SRI) -->
+<script 
+  type="module" 
+  src="https://cdn.example.com/card-layout-12.js"
+  integrity="sha384-..."
+  crossorigin="anonymous"
+></script>
 ```
 
 ## 🧪 Testing
 
-The library includes comprehensive integration tests:
-
 ```bash
-# Run all tests
+# Run integration tests
 npm run test:integration
 
-# Test specific functionality
-node test/integration.js
-```
-
-## 📖 Storybook
-
-Explore all components interactively:
-
-```bash
-# Start Storybook
+# Test in Storybook
 npm run dev
-
-# Build static Storybook
-npm run build:storybook
+# Visit http://localhost:6006
 ```
 
-Visit [http://localhost:6006](http://localhost:6006) to see all components with live examples.
+## 📖 API Reference
+
+### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `cardData` | `Object` | Card data (see Data Structure) |
+| `config` | `Object` | Component configuration |
+
+### Methods
+
+| Method | Description |
+|--------|-------------|
+| `render()` | Force re-render with current data |
+| `getAttribute(name)` | Get attribute value |
+| `setAttribute(name, value)` | Set attribute value |
+
+### Attributes
+
+| Attribute | Type | Description |
+|-----------|------|-------------|
+| `card-data` | `String` | JSON string of card data |
+| `data-source` | `String` | CSS selector for data island |
+| `config` | `String` | JSON string of config |
 
 ## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
-
-### Development Guidelines
-
-- Follow the existing code style
-- Add tests for new features
-- Update documentation as needed
-- Ensure all tests pass before submitting
 
 ## 📄 License
 
@@ -410,16 +771,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - 📧 Email: [dev@uniqode.com](mailto:dev@uniqode.com)
 - 🐛 Issues: [GitHub Issues](https://github.com/uniqode/card-templates/issues)
 - 📖 Documentation: [GitHub Wiki](https://github.com/uniqode/card-templates/wiki)
+- 💬 Discussions: [GitHub Discussions](https://github.com/uniqode/card-templates/discussions)
 
 ## 🎉 Acknowledgments
 
 - Built with [Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
 - Developed with [Storybook](https://storybook.js.org/)
 - Bundled with [Webpack](https://webpack.js.org/)
-- Styled with modern CSS and [Font Awesome](https://fontawesome.com/) icons
+- Production-tested by [Uniqode](https://uniqode.com) / [Beaconstac](https://beaconstac.com)
 
 ---
 
 <div align="center">
   <strong>Made with ❤️ by the Uniqode Team</strong>
+  <br>
+  <sub>Used in production by thousands of digital business cards</sub>
 </div>

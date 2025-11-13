@@ -1,267 +1,339 @@
 import { BaseCard } from '../base/BaseCard.js';
 
-/**
- * Uniqode Card Layout 12 - Madgamer Style
- * Modern gaming/tech company card with curved header and bold colors
- * 
- * Features:
- * - Dark theme with curved cyan header
- * - Prominent company branding
- * - Multiple email contacts with labels
- * - Social media integration
- * - Clean, modern aesthetic
- */
 export class CardLayout12 extends BaseCard {
-  constructor() {
-    super();
-    this.shadowRoot.innerHTML = this.getTemplate();
-  }
-  
   static get layoutId() {
     return 'layout-12';
   }
-  
+
   getTemplate() {
     return `
       <style>
-        :host {
-          display: block;
-          font-family: var(--font-family, 'Open Sans', sans-serif);
-          width: 100%;
-          max-width: 400px;
-          margin: 0 auto;
-          box-sizing: border-box;
-        }
-        
         * {
           box-sizing: border-box;
+          margin: 0;
+          padding: 0;
         }
-        
-        /* Main container with dark background */
+
+        :host {
+          display: block;
+          font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
         .card-container {
-          background: #131A40;
+          width: 244px;
+          height: 527px;
+          margin: 0 auto;
+          background: #000000;
           border: 4px solid #16212F;
           border-radius: 16px;
-          overflow: hidden;
           position: relative;
-          min-height: 600px;
+          overflow-y: auto;
+          overflow-x: hidden;
         }
-        
-        /* Top curved section with cyan background */
-        .header-section {
-          background: #84E9F1;
-          border-radius: 0 0 90px 0;
-          padding: 18px 18px 12px;
-          position: relative;
-          z-index: 1;
+
+        /* Scrollbar styling */
+        .card-container::-webkit-scrollbar {
+          width: 4px;
         }
-        
-        /* Logo section */
-        .logo-container {
-          margin-bottom: 100px;
+
+        .card-container::-webkit-scrollbar-track {
+          background: transparent;
         }
-        
-        .company-logo {
+
+        .card-container::-webkit-scrollbar-thumb {
+          background: rgba(255, 255, 255, 0.2);
+          border-radius: 2px;
+        }
+
+        /* Logo - Fixed at top */
+        .logo {
+          position: absolute;
+          top: 18px;
+          left: 18px;
+          z-index: 30;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
         }
-        
-        .logo-icon {
-          width: 20px;
-          height: 15px;
-          background: #F3FDFE;
-          border-radius: 4px;
-          flex-shrink: 0;
+
+        .logo-icon svg {
+          width: 10px;
+          height: 22px;
         }
-        
+
         .logo-text {
-          font-family: 'Changa', sans-serif;
-          font-weight: 700;
-          font-size: 12px;
-          color: #F3FDFE;
+          font-family: 'NATS', 'Arial', sans-serif;
+          font-weight: 400;
+          font-size: 9.28px;
+          line-height: 1em;
+          text-transform: uppercase;
+          color: #FFFFFF;
           letter-spacing: 0.5px;
-        }
-        
-        .logo-image {
-          max-height: 20px;
-          width: auto;
-        }
-        
-        /* User info section */
-        .user-info {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-        
-        .name-container {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          flex-wrap: wrap;
-        }
-        
-        .name {
-          font-family: 'Cambay', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
-          line-height: 1em;
-          color: #000000;
-        }
-        
-        .pronouns {
-          font-family: 'Cambay', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
-          line-height: 1em;
-          color: #000000;
-        }
-        
-        .designation, .company {
-          font-family: 'Cambay', sans-serif;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 1em;
-          color: #000000;
-        }
-        
-        /* Summary/Bio section */
-        .summary-section {
-          margin-top: 24px;
-        }
-        
-        .summary-text {
-          font-family: 'Cambay', sans-serif;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 1em;
-          color: #F3FDFE;
-          text-align: center;
           white-space: pre-line;
-          max-width: 208px;
-          margin: 0 auto;
         }
-        
-        /* Primary email contact button */
-        .primary-contact {
-          margin-top: 24px;
-        }
-        
-        .primary-email-btn {
-          background: #6130A6;
-          border-radius: 100px;
-          padding: 12px 16px;
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          cursor: pointer;
-          transition: opacity 0.2s;
-          max-width: 208px;
-          margin: 0 auto;
-        }
-        
-        .primary-email-btn:hover {
-          opacity: 0.9;
-        }
-        
-        .email-icon {
-          width: 18px;
-          height: 14px;
-          flex-shrink: 0;
-        }
-        
-        .email-icon svg {
-          width: 100%;
-          height: 100%;
-        }
-        
-        .primary-email-text {
-          font-family: 'Cambay', sans-serif;
-          font-weight: 400;
-          font-size: 12px;
-          line-height: 1em;
-          color: #F3FDFE;
-          flex: 1;
-          min-width: 0;
+
+        /* Header Background with Geometric Pattern */
+        .header-bg {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 284px;
           overflow: hidden;
-          text-overflow: ellipsis;
         }
-        
-        /* Profile image section */
+
+        /* Background shapes */
+        .bg-shapes {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 284px;
+        }
+
+        .bg-shape {
+          position: absolute;
+        }
+
+        /* Dark blue large circle - top left */
+        .shape-1 {
+          width: 342.48px;
+          height: 342.48px;
+          background: #204373;
+          border-radius: 50%;
+          top: -152px;
+          left: -108px;
+        }
+
+        /* Bright blue circle - top right */
+        .shape-2 {
+          width: 271.75px;
+          height: 271.75px;
+          background: #4794FE;
+          border-radius: 50%;
+          top: -157px;
+          left: 118px;
+        }
+
+        /* Bright blue circle - bottom left */
+        .shape-3 {
+          width: 271.75px;
+          height: 271.75px;
+          background: #4794FE;
+          border-radius: 50%;
+          top: 148px;
+          left: -120px;
+        }
+
+        /* Dark blue circle - bottom right */
+        .shape-4 {
+          width: 271.75px;
+          height: 271.75px;
+          background: #204373;
+          border-radius: 50%;
+          top: 148px;
+          left: 152px;
+        }
+
+        /* White circle - middle left */
+        .shape-5 {
+          width: 132.21px;
+          height: 132.21px;
+          background: #FFFFFF;
+          border-radius: 50%;
+          top: 119px;
+          left: -12px;
+        }
+
+        /* White circle - middle right */
+        .shape-6 {
+          width: 132.21px;
+          height: 132.21px;
+          background: #FFFFFF;
+          border-radius: 50%;
+          top: 46px;
+          left: 185px;
+        }
+
+        /* Profile Image Container - Diamond shape */
         .profile-section {
           position: absolute;
-          top: 50px;
-          right: 32px;
-          z-index: 2;
+          top: 10px;
+          left: 16px;
+          width: 232px;
+          height: 274px;
+          z-index: 20;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
-        
-        .profile-image-container {
-          width: 212px;
-          height: 179px;
-          position: relative;
-          border-radius: 0 0 0 90px;
+
+        .profile-diamond {
+          width: 270px;
+          height: 270px;
+          transform: rotate(45deg);
           overflow: hidden;
+          position: relative;
         }
-        
-        .profile-image {
+
+        .profile-image-wrapper {
           width: 100%;
           height: 100%;
+          position: relative;
+        }
+
+        .profile-image {
+          width: 141.42%;
+          height: 141.42%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(-45deg);
           object-fit: cover;
         }
-        
+
         .profile-initials {
           width: 100%;
           height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #6130A6 0%, #84E9F1 100%);
-          font-size: 64px;
+          font-family: 'Lato', sans-serif;
           font-weight: 700;
-          color: white;
+          font-size: 72px;
+          color: #FFFFFF;
+          transform: rotate(-45deg);
+          background: linear-gradient(135deg, #204373 0%, #4794FE 50%, #204373 100%);
         }
-        
-        /* Status badge */
-        .status-badge {
-          position: absolute;
-          top: 19px;
-          right: 0;
-          background: #6130A6;
-          border-radius: 21px 0 0 21px;
-          padding: 4px 12px 4px 4px;
+
+        /* Content Section */
+        .content {
+          position: relative;
+          padding: 308px 18px 100px 18px;
+        }
+
+        /* User Info */
+        .user-info-section {
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 16px;
+        }
+
+        .user-info-inner {
+          display: flex;
+          flex-direction: column;
           gap: 4px;
         }
-        
-        .status-dot {
-          width: 21px;
-          height: 21px;
-          background: white;
-          border-radius: 50%;
+
+        .name-line {
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 1.2em;
+          color: #FFFFFF;
         }
-        
-        /* Contact info section */
-        .contact-info-section {
-          padding: 24px 16px;
-          margin-top: 200px;
+
+        .job-title {
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 1.2em;
+          color: #4794FE;
         }
-        
-        .contact-item {
+
+        .divider-line {
+          width: 100%;
+          height: 3px;
+          background: #4794FE;
+        }
+
+        /* Summary */
+        .summary {
+          width: 208px;
+          font-family: 'Lato', sans-serif;
+          font-weight: 300;
+          font-size: 12px;
+          line-height: 1.2em;
+          color: #FFFFFF;
+          margin-bottom: 16px;
+        }
+
+        /* Contact Cards */
+        .contact-cards {
           display: flex;
-          align-items: flex-start;
+          flex-direction: column;
+          gap: 0;
+        }
+
+        .contact-card {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 10px 16px 10px 0;
+          cursor: pointer;
+          transition: opacity 0.2s;
+          border-radius: 4px;
+          width: 208px;
+        }
+
+        .contact-card:hover {
+          opacity: 0.8;
+        }
+
+        .contact-icon-wrapper {
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+        }
+
+        .contact-icon-wrapper svg {
+          width: 100%;
+          height: 100%;
+        }
+
+        .contact-details {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .contact-type {
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 10px;
+          line-height: 1.2em;
+          color: #4794FE;
+        }
+
+        .contact-value {
+          font-family: 'Lato', sans-serif;
+          font-weight: 400;
+          font-size: 12px;
+          line-height: 1em;
+          color: #FFFFFF;
+        }
+
+        /* Additional Contact Items */
+        .extra-contacts {
+          margin-top: 24px;
+        }
+
+        .extra-contact-item {
+          display: flex;
+          align-items: center;
           gap: 12px;
-          margin-bottom: 24px;
+          margin-bottom: 31px;
           cursor: pointer;
           transition: opacity 0.2s;
         }
-        
-        .contact-item:hover {
+
+        .extra-contact-item:hover {
           opacity: 0.8;
         }
-        
-        .contact-icon-container {
+
+        .extra-icon-circle {
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -271,489 +343,421 @@ export class CardLayout12 extends BaseCard {
           justify-content: center;
           flex-shrink: 0;
         }
-        
-        .contact-icon-container svg {
+
+        .extra-icon {
           width: 24px;
           height: 24px;
-          fill: white;
         }
-        
-        .contact-details {
+
+        .extra-icon svg {
+          width: 100%;
+          height: 100%;
+          fill: #FFFFFF;
+        }
+
+        .extra-text {
           flex: 1;
-          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
         }
-        
-        .contact-value {
-          font-family: 'Open Sans', sans-serif;
-          font-weight: 600;
-          font-size: 18px;
-          line-height: 1.36em;
-          color: white;
-          word-break: break-word;
-        }
-        
-        .contact-label {
+
+        .extra-label {
           font-family: 'Open Sans', sans-serif;
           font-weight: 600;
           font-size: 14px;
-          line-height: 1.36em;
-          color: white;
+          color: #FFFFFF;
           opacity: 0.4;
-          margin-top: 2px;
+          line-height: 1.36em;
         }
-        
+
+        .extra-value {
+          font-family: 'Open Sans', sans-serif;
+          font-weight: 600;
+          font-size: 18px;
+          color: #FFFFFF;
+          line-height: 1.36em;
+          word-break: break-word;
+        }
+
         /* Divider */
-        .divider {
+        .section-divider {
           height: 1px;
           background: rgba(0, 0, 0, 0.1);
-          margin: 32px 16px;
+          margin: 16px 0 24px 0;
         }
-        
-        /* Social links section */
+
+        /* Social Section */
         .social-section {
-          padding: 0 16px;
           text-align: center;
+          margin-bottom: 40px;
         }
-        
+
         .social-title {
           font-family: 'Open Sans', sans-serif;
           font-weight: 400;
           font-size: 18px;
+          color: #FFFFFF;
           line-height: 1.36em;
-          color: white;
           margin-bottom: 24px;
         }
-        
-        .social-links {
+
+        .social-grid {
           display: flex;
           justify-content: center;
-          gap: 8px;
-          flex-wrap: wrap;
-          margin-bottom: 32px;
+          gap: 16px;
         }
-        
+
         .social-link {
           width: 36px;
           height: 36px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.1);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: all 0.2s;
-          text-decoration: none;
+          transition: transform 0.2s;
         }
-        
+
         .social-link:hover {
-          background: rgba(255, 255, 255, 0.2);
-          transform: translateY(-2px);
+          transform: scale(1.1);
         }
-        
-        .social-link svg {
-          width: 20px;
-          height: 20px;
-          fill: white;
+
+        .social-icon {
+          width: 30px;
+          height: 30px;
         }
-        
-        /* CTA Button */
-        .cta-button {
-          border: 2px solid #1671F9;
-          border-radius: 30px;
-          padding: 16px 24px;
-          margin: 0 16px 24px;
-          text-align: center;
-          cursor: pointer;
-          transition: all 0.2s;
+
+        .social-icon svg {
+          width: 100%;
+          height: 100%;
+          fill: #FFFFFF;
         }
-        
-        .cta-button:hover {
-          background: rgba(22, 113, 249, 0.1);
-        }
-        
-        .cta-text {
-          font-family: 'Open Sans', sans-serif;
-          font-weight: 600;
-          font-size: 18px;
-          line-height: 1.36em;
-          color: #1671F9;
-        }
-        
-        /* Quick action button (floating) */
-        .quick-action-btn {
-          position: absolute;
-          bottom: 24px;
+
+        /* User Icon Button */
+        .user-icon-btn {
+          position: fixed;
+          bottom: 22px;
           right: 16px;
           width: 40px;
           height: 40px;
-          background: #84E9F1;
+          background: #4794FE;
           border-radius: 50%;
-          box-shadow: 0px 2px 8px 0px rgba(129, 132, 136, 0.15);
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
           transition: all 0.2s;
-          z-index: 10;
+          box-shadow: 0px 8px 25px 0px rgba(0, 0, 0, 0.25);
+          z-index: 40;
         }
-        
-        .quick-action-btn:hover {
+
+        .user-icon-btn:hover {
           transform: scale(1.1);
         }
-        
-        .quick-action-btn svg {
+
+        .user-icon-btn svg {
           width: 18px;
           height: 18px;
-          fill: #000000;
+          fill: #00171F;
         }
-        
+
         .hidden {
           display: none !important;
-        }
-        
-        /* Responsive design */
-        @media (max-width: 480px) {
-          :host {
-            max-width: 100%;
-          }
-          
-          .card-container {
-            border-radius: 0;
-            border-left: 0;
-            border-right: 0;
-          }
-          
-          .profile-image-container {
-            width: 180px;
-            height: 150px;
-          }
-          
-          .contact-info-section {
-            margin-top: 170px;
-          }
         }
       </style>
       
       <div class="card-container">
-        <!-- Header with cyan background -->
-        <div class="header-section">
-          <!-- Logo -->
-          <div class="logo-container">
-            <div class="company-logo">
-              <img class="logo-image hidden" alt="Company Logo" />
-              <div class="logo-icon hidden"></div>
-              <div class="logo-text hidden"></div>
-            </div>
-          </div>
-          
-          <!-- User info -->
-          <div class="user-info">
-            <div class="name-container">
-              <span class="name"></span>
-              <span class="pronouns hidden"></span>
-            </div>
-            <div class="designation hidden"></div>
-            <div class="company hidden"></div>
-          </div>
-          
-          <!-- Summary -->
-          <div class="summary-section hidden">
-            <p class="summary-text"></p>
-          </div>
-          
-          <!-- Primary email contact -->
-          <div class="primary-contact hidden">
-            <div class="primary-email-btn">
-              <div class="email-icon">
-                <svg viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1H17V13H1V1Z" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M17 2L9 8L1 2" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <span class="primary-email-text"></span>
-            </div>
+        <!-- Header Background with Geometric Pattern -->
+        <div class="header-bg">
+          <div class="bg-shapes">
+            <div class="bg-shape shape-1"></div>
+            <div class="bg-shape shape-2"></div>
+            <div class="bg-shape shape-3"></div>
+            <div class="bg-shape shape-4"></div>
+            <div class="bg-shape shape-5"></div>
+            <div class="bg-shape shape-6"></div>
           </div>
         </div>
-        
-        <!-- Profile image section -->
+
+        <!-- Logo -->
+        <div class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 10 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5.02 2.71L10.04 0V21.65L5.02 19.74V2.71Z" fill="#FFFFFF"/>
+              <path d="M0 2.71L5.02 0V21.65L0 19.74V2.71Z" stroke="#FFFFFF" stroke-width="1.546"/>
+            </svg>
+          </div>
+          <div class="logo-text">OAKWOOD
+REALTY</div>
+        </div>
+
+        <!-- Profile Image in Diamond Shape -->
         <div class="profile-section">
-          <div class="profile-image-container">
-            <img class="profile-image hidden" alt="Profile" />
-            <div class="profile-initials hidden"></div>
+          <div class="profile-diamond">
+            <div class="profile-image-wrapper">
+              <img class="profile-image hidden" alt="Profile" />
+              <div class="profile-initials hidden"></div>
+            </div>
           </div>
-          <div class="status-badge hidden">
-            <div class="status-dot"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+          <!-- User Info -->
+          <div class="user-info-section">
+            <div class="user-info-inner">
+              <div class="name-line"></div>
+              <div class="job-title hidden"></div>
+            </div>
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Summary -->
+          <div class="summary hidden"></div>
+
+          <!-- Contact Cards -->
+          <div class="contact-cards"></div>
+
+          <!-- Extra Contacts -->
+          <div class="extra-contacts"></div>
+
+          <!-- Divider -->
+          <div class="section-divider"></div>
+
+          <!-- Social Section -->
+          <div class="social-section">
+            <div class="social-title">Let's connect</div>
+            <div class="social-grid"></div>
           </div>
         </div>
-        
-        <!-- Contact information -->
-        <div class="contact-info-section">
-          <div class="contacts-list"></div>
-          
-          <div class="address-item hidden"></div>
-        </div>
-        
-        <!-- Divider -->
-        <div class="divider"></div>
-        
-        <!-- Social links -->
-        <div class="social-section">
-          <div class="social-title">Let's connect</div>
-          <div class="social-links"></div>
-        </div>
-        
-        <!-- CTA Button -->
-        <div class="cta-button">
-          <div class="cta-text">Share Your Contact</div>
-        </div>
-        
-        <!-- Quick action button -->
-        <div class="quick-action-btn hidden">
+
+        <!-- User Icon Button -->
+        <div class="user-icon-btn">
           <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1.5 2.25C1.5 1.85218 1.65804 1.47064 1.93934 1.18934C2.22064 0.908035 2.60218 0.75 3 0.75H12L16.5 5.25V15.75C16.5 16.1478 16.342 16.5294 16.0607 16.8107C15.7794 17.092 15.3978 17.25 15 17.25H3C2.60218 17.25 2.22064 17.092 1.93934 16.8107C1.65804 16.5294 1.5 16.1478 1.5 15.75V2.25Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 0.75V5.25H16.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 2.25C10.864 2.25 12.375 3.761 12.375 5.625C12.375 7.489 10.864 9 9 9C7.136 9 5.625 7.489 5.625 5.625C5.625 3.761 7.136 2.25 9 2.25Z" fill="currentColor"/>
+            <path d="M3.75 15.75V14.25C3.75 13.2554 4.14509 12.3016 4.84835 11.5984C5.55161 10.8951 6.50544 10.5 7.5 10.5H10.5C11.4946 10.5 12.4484 10.8951 13.1516 11.5984C13.8549 12.3016 14.25 13.2554 14.25 14.25V15.75" fill="currentColor"/>
           </svg>
         </div>
       </div>
     `;
   }
-  
+
   render() {
     if (!this._cardData) return;
     
-    this.applyCustomizations();
-    this.renderLogo();
+    this.renderProfile();
     this.renderUserInfo();
     this.renderSummary();
-    this.renderPrimaryEmail();
-    this.renderProfile();
-    this.renderContacts();
-    this.renderAddress();
+    this.renderPrimaryContacts();
+    this.renderExtraContacts();
     this.renderSocialLinks();
   }
-  
-  renderLogo() {
-    const { logo_url, company } = this._cardData;
-    const logoImage = this.shadowRoot.querySelector('.logo-image');
-    const logoText = this.shadowRoot.querySelector('.logo-text');
-    
-    if (logo_url) {
-      logoImage.src = logo_url;
-      logoImage.classList.remove('hidden');
-    } else if (company) {
-      logoText.textContent = company.toUpperCase();
-      logoText.classList.remove('hidden');
+
+  renderProfile() {
+    const { profile_image, first_name, last_name } = this._cardData;
+    const imageEl = this.shadowRoot.querySelector('.profile-image');
+    const initialsEl = this.shadowRoot.querySelector('.profile-initials');
+
+    if (profile_image) {
+      imageEl.src = profile_image;
+      imageEl.classList.remove('hidden');
+      initialsEl.classList.add('hidden');
+    } else {
+      const initials = this.getInitials(first_name, last_name);
+      initialsEl.textContent = initials;
+      initialsEl.classList.remove('hidden');
+      imageEl.classList.add('hidden');
     }
   }
-  
+
   renderUserInfo() {
-    const { pronouns_v2, designation, company, department } = this._cardData;
+    const { first_name, last_name, pronouns_v2, designation, company } = this._cardData;
     
-    // Name
-    const nameEl = this.shadowRoot.querySelector('.name');
-    nameEl.textContent = this.getFullName();
-    
-    // Pronouns
-    const pronounsEl = this.shadowRoot.querySelector('.pronouns');
-    if (pronouns_v2) {
-      pronounsEl.textContent = `(${pronouns_v2})`;
-      pronounsEl.classList.remove('hidden');
-    }
-    
-    // Designation
-    const designationEl = this.shadowRoot.querySelector('.designation');
-    if (designation) {
-      designationEl.textContent = designation;
-      designationEl.classList.remove('hidden');
-    }
-    
-    // Company/Department
-    const companyEl = this.shadowRoot.querySelector('.company');
-    if (company || department) {
-      companyEl.textContent = company || department;
-      companyEl.classList.remove('hidden');
+    // Name with pronouns
+    const nameLine = this.shadowRoot.querySelector('.name-line');
+    const fullName = `${first_name || ''} ${last_name || ''}`.trim();
+    const pronouns = pronouns_v2 ? ` (${pronouns_v2})` : '';
+    nameLine.textContent = fullName + pronouns;
+
+    // Job title with company
+    const jobTitleEl = this.shadowRoot.querySelector('.job-title');
+    if (designation || company) {
+      const parts = [designation, company].filter(Boolean);
+      jobTitleEl.textContent = parts.join('  |  ');
+      jobTitleEl.classList.remove('hidden');
+    } else {
+      jobTitleEl.classList.add('hidden');
     }
   }
-  
+
   renderSummary() {
     const { summary } = this._cardData;
-    const summarySection = this.shadowRoot.querySelector('.summary-section');
-    const summaryText = this.shadowRoot.querySelector('.summary-text');
+    const summaryEl = this.shadowRoot.querySelector('.summary');
     
     if (summary) {
-      summaryText.textContent = summary;
-      summarySection.classList.remove('hidden');
-    }
-  }
-  
-  renderPrimaryEmail() {
-    const { email_v2 } = this._cardData;
-    const primaryContact = this.shadowRoot.querySelector('.primary-contact');
-    const primaryEmailText = this.shadowRoot.querySelector('.primary-email-text');
-    const primaryEmailBtn = this.shadowRoot.querySelector('.primary-email-btn');
-    
-    if (email_v2 && email_v2.length > 0 && email_v2[0].value) {
-      const primaryEmail = email_v2[0];
-      primaryEmailText.textContent = primaryEmail.value;
-      primaryContact.classList.remove('hidden');
-      
-      primaryEmailBtn.onclick = () => this.handleContactClick('email', primaryEmail.value, primaryEmail.label);
-    }
-  }
-  
-  renderProfile() {
-    const { user_image_url } = this._cardData;
-    const profileImage = this.shadowRoot.querySelector('.profile-image');
-    const profileInitials = this.shadowRoot.querySelector('.profile-initials');
-    
-    if (user_image_url) {
-      profileImage.src = user_image_url;
-      profileImage.classList.remove('hidden');
+      summaryEl.textContent = summary;
+      summaryEl.classList.remove('hidden');
     } else {
-      profileInitials.textContent = this.getInitials();
-      profileInitials.classList.remove('hidden');
+      summaryEl.classList.add('hidden');
     }
   }
-  
-  renderContacts() {
-    const contactsList = this.shadowRoot.querySelector('.contacts-list');
-    contactsList.innerHTML = '';
-    
-    const { email_v2, phone_v2, website_v2 } = this._cardData;
-    
-    // Skip first email if already shown as primary
-    if (email_v2 && email_v2.length > 1) {
-      email_v2.slice(1).forEach((email, index) => {
-        if (email.value) {
-          contactsList.appendChild(this.createContactItem('email', email.value, email.label));
-        }
-      });
-    }
-    
-    // Phone contacts
+
+  renderPrimaryContacts() {
+    const { phone_v2, email_v2 } = this._cardData;
+    const container = this.shadowRoot.querySelector('.contact-cards');
+    container.innerHTML = '';
+
+    // Phone (first one)
     if (phone_v2 && phone_v2.length > 0) {
-      phone_v2.forEach(phone => {
-        if (phone.value) {
-          contactsList.appendChild(this.createContactItem('phone', phone.value, phone.label));
-        }
-      });
+      const phoneCard = this.createContactCard('phone', phone_v2[0].value, 'Phone');
+      container.appendChild(phoneCard);
     }
-    
-    // Website contacts
-    if (website_v2 && website_v2.length > 0) {
-      website_v2.forEach(website => {
-        if (website.value) {
-          contactsList.appendChild(this.createContactItem('website', website.value, website.label));
-        }
-      });
+
+    // Email (first one)
+    if (email_v2 && email_v2.length > 0) {
+      const emailCard = this.createContactCard('email', email_v2[0].value, 'Email');
+      container.appendChild(emailCard);
     }
   }
-  
-  createContactItem(type, value, label) {
-    const item = document.createElement('div');
-    item.className = 'contact-item';
+
+  createContactCard(type, value, label) {
+    const card = document.createElement('div');
+    card.className = 'contact-card';
     
-    item.innerHTML = `
-      <div class="contact-icon-container">
-        ${this.getContactIcon(type)}
-      </div>
+    const icon = type === 'phone' 
+      ? `<svg viewBox="0 0 18 18" fill="none" stroke="#4794FE" stroke-width="1.5"><path d="M15.75 12.74v2.51c0 .28-.11.54-.29.74-.19.19-.44.3-.71.3-5.52 0-10-4.48-10-10 0-.27.11-.52.3-.71.2-.18.46-.29.74-.29h2.51c.27 0 .52.11.71.29.19.19.29.44.29.71 0 .78.13 1.54.38 2.26.08.23.05.49-.08.7l-1.09 1.09c1.06 1.86 2.71 3.51 4.57 4.57l1.09-1.09c.21-.13.47-.16.7-.08.72.25 1.48.38 2.26.38.27 0 .52.1.71.29.18.19.29.44.29.71z"/></svg>`
+      : `<svg viewBox="0 0 18 14" fill="none"><rect x="1" y="1" width="16" height="12" stroke="#FFFFFF" stroke-width="1" fill="none"/><path d="M17 2L9 8L1 2" stroke="#FFFFFF" stroke-width="1"/></svg>`;
+
+    card.innerHTML = `
+      <div class="contact-icon-wrapper">${icon}</div>
       <div class="contact-details">
+        <div class="contact-type">${label}</div>
         <div class="contact-value">${value}</div>
-        ${label ? `<div class="contact-label">${label}</div>` : ''}
       </div>
     `;
-    
-    item.onclick = () => this.handleContactClick(type, value, label);
-    
-    return item;
+
+    card.addEventListener('click', () => {
+      this.handleContactClick(type, value);
+    });
+
+    return card;
   }
-  
-  renderAddress() {
-    const { address_v2 } = this._cardData;
-    const contactsList = this.shadowRoot.querySelector('.contacts-list');
-    
-    if (address_v2) {
-      const addressItem = this.createContactItem('address', address_v2, 'Address');
-      contactsList.appendChild(addressItem);
+
+  renderExtraContacts() {
+    const { email_v2, phone_v2, website_v2, address } = this._cardData;
+    const container = this.shadowRoot.querySelector('.extra-contacts');
+    container.innerHTML = '';
+
+    // Additional emails (skip first one)
+    if (email_v2 && email_v2.length > 1) {
+      email_v2.slice(1).forEach(email => {
+        const item = this.createExtraContactItem('email', email.value, email.label);
+        container.appendChild(item);
+      });
+    }
+
+    // Additional phones (skip first one)
+    if (phone_v2 && phone_v2.length > 1) {
+      phone_v2.slice(1).forEach(phone => {
+        const item = this.createExtraContactItem('phone', phone.value, phone.label);
+        container.appendChild(item);
+      });
+    }
+
+    // Websites
+    if (website_v2 && website_v2.length > 0) {
+      website_v2.forEach(website => {
+        const item = this.createExtraContactItem('website', website.value, website.label);
+        container.appendChild(item);
+      });
+    }
+
+    // Address
+    if (address) {
+      const addressText = [
+        address.street,
+        address.city,
+        address.state,
+        address.postal_code,
+        address.country
+      ].filter(Boolean).join(', ');
+      
+      if (addressText) {
+        const item = this.createExtraContactItem('address', addressText, 'Address');
+        container.appendChild(item);
+      }
     }
   }
-  
+
+  createExtraContactItem(type, value, label) {
+    const item = document.createElement('div');
+    item.className = 'extra-contact-item';
+    
+    const icon = this.getContactIcon(type);
+    
+    item.innerHTML = `
+      <div class="extra-icon-circle">
+        <div class="extra-icon">${icon}</div>
+      </div>
+      <div class="extra-text">
+        <div class="extra-label">${label || type}</div>
+        <div class="extra-value">${value}</div>
+      </div>
+    `;
+
+    item.addEventListener('click', () => {
+      this.handleContactClick(type, value);
+    });
+
+    return item;
+  }
+
   renderSocialLinks() {
-    const { social_links } = this._cardData;
-    const socialLinksContainer = this.shadowRoot.querySelector('.social-links');
+    const { social_media_links } = this._cardData;
+    const socialGrid = this.shadowRoot.querySelector('.social-grid');
+    socialGrid.innerHTML = '';
+
+    if (!social_media_links) return;
+
+    const platforms = ['instagram', 'facebook', 'twitter', 'whatsapp'];
     
-    if (!social_links || typeof social_links !== 'object') return;
-    
-    socialLinksContainer.innerHTML = '';
-    
-    Object.entries(social_links).forEach(([platform, url]) => {
-      if (url && url.trim()) {
-        const link = document.createElement('a');
+    platforms.forEach(platform => {
+      if (social_media_links[platform]) {
+        const link = document.createElement('div');
         link.className = 'social-link';
-        link.href = url;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.innerHTML = this.getSocialIcon(platform);
-        link.title = platform.charAt(0).toUpperCase() + platform.slice(1);
-        socialLinksContainer.appendChild(link);
+        link.innerHTML = `
+          <div class="social-icon">${this.getSocialIcon(platform)}</div>
+        `;
+        
+        link.addEventListener('click', () => {
+          this.handleSocialClick(platform, social_media_links[platform]);
+        });
+
+        socialGrid.appendChild(link);
       }
     });
   }
-  
-  getContactIcon(type) {
-    const icons = {
-      phone: `<svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-      </svg>`,
-      email: `<svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-      </svg>`,
-      website: `<svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-      </svg>`,
-      address: `<svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-      </svg>`
-    };
-    
-    return icons[type] || icons.email;
-  }
-  
+
   getSocialIcon(platform) {
     const icons = {
-      instagram: `<svg viewBox="0 0 30 30" fill="currentColor">
-        <path d="M15 2.16c4.07 0 4.56.02 6.16.09 4.13.19 6.05 2.14 6.24 6.24.07 1.6.09 2.09.09 6.16s-.02 4.56-.09 6.16c-.19 4.09-2.11 6.05-6.24 6.24-1.6.07-2.09.09-6.16.09s-4.56-.02-6.16-.09c-4.14-.19-6.05-2.16-6.24-6.24-.07-1.6-.09-2.09-.09-6.16s.02-4.56.09-6.16C2.79 4.3 4.71 2.35 8.84 2.16c1.6-.07 2.09-.09 6.16-.09zM15 0c-4.14 0-4.66.02-6.29.09-5.53.25-8.61 3.31-8.86 8.86C-.02 10.58 0 11.1 0 15.65s.02 5.07.09 6.7c.25 5.53 3.31 8.61 8.86 8.86 1.63.07 2.15.09 6.7.09s5.07-.02 6.7-.09c5.52-.25 8.61-3.33 8.86-8.86.07-1.63.09-2.15.09-6.7s-.02-5.07-.09-6.7C30.96 3.4 27.88.32 22.35.09 20.72.02 20.2 0 15.65 0H15zm0 7.29c-4.32 0-7.82 3.5-7.82 7.82s3.5 7.82 7.82 7.82 7.82-3.5 7.82-7.82-3.5-7.82-7.82-7.82zm0 12.9c-2.81 0-5.09-2.28-5.09-5.09s2.28-5.09 5.09-5.09 5.09 2.28 5.09 5.09-2.28 5.09-5.09 5.09zm8.14-13.21c0 1.01-.82 1.83-1.83 1.83s-1.83-.82-1.83-1.83.82-1.83 1.83-1.83 1.83.82 1.83 1.83z"/>
-      </svg>`,
-      facebook: `<svg viewBox="0 0 30 30" fill="currentColor">
-        <path d="M30 15.09c0-8.28-6.72-15-15-15s-15 6.72-15 15c0 7.49 5.48 13.69 12.66 14.84v-10.49H8.85v-4.35h3.81V11.8c0-3.76 2.24-5.84 5.67-5.84 1.64 0 3.36.29 3.36.29v3.69h-1.89c-1.86 0-2.45 1.16-2.45 2.34v2.81h4.16l-.66 4.35h-3.5v10.49C24.52 28.78 30 22.58 30 15.09z"/>
-      </svg>`,
-      twitter: `<svg viewBox="0 0 30 24.37" fill="currentColor">
-        <path d="M29.94 2.88c-1.1.49-2.28.82-3.52.97 1.27-.76 2.24-1.96 2.7-3.39-1.19.7-2.5 1.21-3.9 1.48C24.11.74 22.51 0 20.74 0c-3.39 0-6.14 2.75-6.14 6.14 0 .48.05.95.16 1.4C9.67 7.32 5.13 4.86 2.1 1.13c-.53.91-.83 1.96-.83 3.09 0 2.13 1.08 4.01 2.73 5.11-.51-.02-.99-.16-1.4-.38v.08c0 2.97 2.12 5.46 4.93 6.02-.51.14-1.06.21-1.62.21-.4 0-.78-.04-1.16-.11.78 2.44 3.05 4.22 5.74 4.27-2.1 1.65-4.75 2.63-7.63 2.63-.5 0-.99-.03-1.47-.08 2.73 1.75 5.97 2.77 9.44 2.77 11.33 0 17.52-9.39 17.52-17.52 0-.27 0-.53-.02-.8 1.2-.87 2.24-1.95 3.07-3.19z"/>
-      </svg>`,
-      whatsapp: `<svg viewBox="0 0 30 30" fill="currentColor">
-        <path d="M15 0C6.72 0 0 6.72 0 15c0 2.66.69 5.16 1.91 7.34L.07 29.93l7.78-2.04C10.01 29.14 12.43 30 15 30c8.28 0 15-6.72 15-15S23.28 0 15 0zm7.19 21.2c-.3.84-1.47 1.54-2.41 1.75-.65.14-1.49.25-4.33-.93-3.64-1.51-5.98-5.2-6.16-5.44-.18-.24-1.5-2-1.5-3.81s.95-2.71 1.29-3.08c.34-.37.74-.46.99-.46.25 0 .5.01.71.01.23 0 .54-.09.84.64.3.73 1.03 2.51 1.12 2.69.09.18.15.39.03.63-.12.24-.18.39-.36.6-.18.21-.38.47-.54.63-.18.18-.37.37-.16.72.21.35 .93 1.54 2 2.49 1.38 1.22 2.54 1.6 2.9 1.78.36.18.57.15.78-.09.21-.24.9-.99 1.14-1.33.24-.34.48-.28.81-.17.33.11 2.1 .99 2.46 1.17.36.18.6.27.69.42.09.15.09.87-.21 1.71z"/>
-      </svg>`,
-      linkedin: `<svg viewBox="0 0 30 30" fill="currentColor">
-        <path d="M27.26 0H2.74C1.23 0 0 1.23 0 2.74v24.52C0 28.77 1.23 30 2.74 30h24.52c1.51 0 2.74-1.23 2.74-2.74V2.74C30 1.23 28.77 0 27.26 0zM8.9 25.52H4.45V11.23H8.9v14.29zM6.67 9.27c-1.42 0-2.57-1.15-2.57-2.57 0-1.42 1.15-2.57 2.57-2.57 1.42 0 2.57 1.15 2.57 2.57 0 1.42-1.14 2.57-2.57 2.57zm18.85 16.25h-4.45v-6.94c0-1.66-.03-3.79-2.31-3.79-2.31 0-2.67 1.81-2.67 3.67v7.06h-4.45V11.23h4.27v1.95h.06c.59-1.13 2.05-2.31 4.21-2.31 4.5 0 5.34 2.96 5.34 6.82v7.58z"/>
-      </svg>`
+      instagram: `<svg viewBox="0 0 30 30" fill="currentColor"><path d="M15 8.438A6.562 6.562 0 108.438 15 6.57 6.57 0 0015 8.438zM15 19.688A4.688 4.688 0 1119.688 15 4.693 4.693 0 0115 19.688z"/><circle cx="21.844" cy="8.156" r="1.594"/><path d="M25.313 0H4.687A4.693 4.693 0 000 4.688v20.625A4.693 4.693 0 004.688 30h20.625A4.693 4.693 0 0030 25.313V4.687A4.693 4.693 0 0025.313 0zm2.813 25.313a2.816 2.816 0 01-2.813 2.813H4.687a2.816 2.816 0 01-2.812-2.813V4.687A2.816 2.816 0 014.688 1.876h20.625a2.816 2.816 0 012.813 2.813z"/></svg>`,
+      facebook: `<svg viewBox="0 0 30 30" fill="currentColor"><path d="M28.344 0H1.656A1.656 1.656 0 000 1.656v26.688A1.656 1.656 0 001.656 30h14.367V18.398h-3.91v-4.523h3.91v-3.336c0-3.875 2.367-5.984 5.824-5.984 1.656 0 3.078.123 3.492.178v4.05l-2.396.001c-1.88 0-2.244.893-2.244 2.203v2.888h4.484l-.584 4.523h-3.9V30h7.645A1.656 1.656 0 0030 28.344V1.656A1.656 1.656 0 0028.344 0z"/></svg>`,
+      twitter: `<svg viewBox="0 0 30 24" fill="currentColor"><path d="M30 2.839a12.3 12.3 0 01-3.534.97 6.168 6.168 0 002.704-3.401 12.33 12.33 0 01-3.907 1.493A6.153 6.153 0 0020.77 0c-3.398 0-6.153 2.755-6.153 6.153 0 .482.054.951.16 1.402A17.466 17.466 0 012.087 1.106a6.153 6.153 0 001.904 8.21 6.127 6.127 0 01-2.787-.77v.078a6.153 6.153 0 004.935 6.03 6.153 6.153 0 01-2.777.105 6.153 6.153 0 005.745 4.271A12.34 12.34 0 010 21.29 17.408 17.408 0 009.435 24c11.322 0 17.512-9.38 17.512-17.512 0-.267-.006-.533-.017-.797A12.512 12.512 0 0030 2.839z"/></svg>`,
+      whatsapp: `<svg viewBox="0 0 30 30" fill="currentColor"><path d="M15 0C6.716 0 0 6.716 0 15c0 2.654.693 5.152 1.904 7.318L.061 28.78a.938.938 0 001.16 1.16l6.463-1.843A14.906 14.906 0 0015 30c8.284 0 15-6.716 15-15S23.284 0 15 0zm7.362 21.238c-.295.829-1.693 1.556-2.373 1.623-.616.062-1.115.276-4.603-.963-4.21-1.495-6.927-5.756-7.137-6.024-.206-.268-1.695-2.252-1.695-4.295 0-2.043 1.073-3.045 1.453-3.462.38-.417.829-.521 1.105-.521.276 0 .552.003.795.014.254.012.596-.097.933.711.342.82 1.166 2.844 1.268 3.048.103.204.171.443.034.711-.137.268-.206.437-.411.674-.206.237-.432.529-.617.71-.206.204-.42.425-.18.833.237.408 1.058 1.744 2.273 2.825 1.562 1.391 2.88 1.823 3.29 2.028.412.206.653.171.893-.103.237-.274.682-.83 1.073-1.389.296-.417.657-.471 1.1-.279.444.191 2.809 1.323 3.292 1.565.483.242.81.36.927.557.116.197.116 1.133-.179 1.962z"/></svg>`
     };
-    
-    return icons[platform] || icons.instagram;
+    return icons[platform] || '';
   }
-  
-  setupEventListeners() {
-    // CTA button
-    const ctaButton = this.shadowRoot.querySelector('.cta-button');
-    this.addEventListenerWithCleanup(ctaButton, 'click', this.handleCardShare);
-    
-    // Quick action button
-    const quickActionBtn = this.shadowRoot.querySelector('.quick-action-btn');
-    this.addEventListenerWithCleanup(quickActionBtn, 'click', this.handleCardShare);
+
+  getContactIcon(type) {
+    const icons = {
+      email: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
+      phone: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>`,
+      website: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>`,
+      address: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`
+    };
+    return icons[type] || icons.email;
   }
 }
 
-// Register the Web Component
 customElements.define('uniqode-layout-12', CardLayout12);
-
 export default CardLayout12;
-

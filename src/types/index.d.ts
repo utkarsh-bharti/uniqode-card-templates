@@ -209,55 +209,50 @@ export interface BaseTemplateProps {
 }
 
 // Template-specific props (each template can extend BaseTemplateProps)
-export interface Layout1Props extends BaseTemplateProps {
+
+/**
+ * Layout 12 - "Madgamer" Style
+ * Gaming/esports-inspired dark theme with neon accents
+ */
+export interface Layout12Props extends BaseTemplateProps {
   config?: BaseTemplateProps['config'] & {
     showProfileImage?: boolean;
-    compactMode?: boolean;
-  };
-}
-
-export interface Layout2Props extends BaseTemplateProps {
-  config?: BaseTemplateProps['config'] & {
-    showBackgroundPattern?: boolean;
-    gradientStyle?: 'linear' | 'radial';
-  };
-}
-
-export interface Layout3Props extends BaseTemplateProps {
-  config?: BaseTemplateProps['config'] & {
-    cardStyle?: 'minimal' | 'detailed' | 'executive';
-  };
-}
-
-// Add more layout-specific props as needed...
-export interface LayoutComprehensiveProps extends BaseTemplateProps {
-  config?: BaseTemplateProps['config'] & {
-    showAllFields?: boolean;
-    groupSimilarFields?: boolean;
-    expandableSection?: boolean;
+    showSummary?: boolean;
+    showCustomFields?: boolean;
+    accentColor?: string;  // Neon accent color (default: #84E9F1)
+    darkMode?: boolean;    // Force dark mode (default: true)
   };
 }
 
 // ============================================================================
-// WEB COMPONENT DECLARATIONS FOR JSX
+// WEB COMPONENT DECLARATIONS FOR JSX/TSX
 // ============================================================================
 
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      'uniqode-layout-1': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & Layout1Props;
-      'uniqode-layout-2': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & Layout2Props;
-      'uniqode-layout-3': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & Layout3Props;
-      'uniqode-layout-4': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-5': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-6': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-7': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-8': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-9': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-11': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & BaseTemplateProps;
-      'uniqode-layout-comprehensive': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & LayoutComprehensiveProps;
+      'uniqode-layout-12': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> & {
+        ref?: React.Ref<HTMLElement & UniqodeCardElement>;
+      };
     }
   }
+}
+
+// ============================================================================
+// WEB COMPONENT ELEMENT INTERFACE
+// ============================================================================
+
+/**
+ * Extended HTMLElement interface for Uniqode Card Web Components
+ * Use this for type-safe access to card properties and methods
+ */
+export interface UniqodeCardElement extends HTMLElement {
+  // Properties
+  cardData: CardData;
+  config: BaseTemplateProps['config'];
+  
+  // Event handlers are attached via addEventListener
+  // See event types below for detail structures
 }
 
 // ============================================================================

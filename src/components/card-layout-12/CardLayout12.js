@@ -554,12 +554,12 @@ REALTY</div>
   }
 
   renderProfile() {
-    const { profile_image, first_name, last_name } = this._cardData;
+    const { user_image_url, first_name, last_name } = this._cardData;
     const imageEl = this.shadowRoot.querySelector('.profile-image');
     const initialsEl = this.shadowRoot.querySelector('.profile-initials');
-
-    if (profile_image) {
-      imageEl.src = profile_image;
+    
+    if (user_image_url) {
+      imageEl.src = user_image_url;
       imageEl.classList.remove('hidden');
       initialsEl.classList.add('hidden');
     } else {
@@ -644,7 +644,7 @@ REALTY</div>
   }
 
   renderExtraContacts() {
-    const { email_v2, phone_v2, website_v2, address } = this._cardData;
+    const { email_v2, phone_v2, website_v2, address_v2 } = this._cardData;
     const container = this.shadowRoot.querySelector('.extra-contacts');
     container.innerHTML = '';
 
@@ -673,19 +673,9 @@ REALTY</div>
     }
 
     // Address
-    if (address) {
-      const addressText = [
-        address.street,
-        address.city,
-        address.state,
-        address.postal_code,
-        address.country
-      ].filter(Boolean).join(', ');
-      
-      if (addressText) {
-        const item = this.createExtraContactItem('address', addressText, 'Address');
-        container.appendChild(item);
-      }
+    if (address_v2) {
+      const item = this.createExtraContactItem('address', address_v2, 'Address');
+      container.appendChild(item);
     }
   }
 
@@ -713,16 +703,16 @@ REALTY</div>
   }
 
   renderSocialLinks() {
-    const { social_media_links } = this._cardData;
+    const { social_links } = this._cardData;
     const socialGrid = this.shadowRoot.querySelector('.social-grid');
     socialGrid.innerHTML = '';
 
-    if (!social_media_links) return;
+    if (!social_links) return;
 
     const platforms = ['instagram', 'facebook', 'twitter', 'whatsapp'];
     
     platforms.forEach(platform => {
-      if (social_media_links[platform]) {
+      if (social_links[platform]) {
         const link = document.createElement('div');
         link.className = 'social-link';
         link.innerHTML = `
@@ -730,7 +720,7 @@ REALTY</div>
         `;
         
         link.addEventListener('click', () => {
-          this.handleSocialClick(platform, social_media_links[platform]);
+          this.handleSocialClick(platform, social_links[platform]);
         });
 
         socialGrid.appendChild(link);

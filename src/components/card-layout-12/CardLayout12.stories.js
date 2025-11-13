@@ -111,20 +111,16 @@ const createCardData = (args = {}) => ({
   website_v2: args.website ? [
     { value: args.website, label: 'Website' }
   ] : [],
-  address: (args.street || args.city || args.state) ? {
-    street: args.street || '',
-    city: args.city || '',
-    state: args.state || '',
-    postal_code: '',
-    country: ''
-  } : null,
-  social_media_links: {
+  address_v2: (args.street || args.city || args.state) 
+    ? [args.street, args.city, args.state].filter(Boolean).join(', ')
+    : '',
+  social_links: {
     instagram: args.instagram || '',
     facebook: args.facebook || '',
     twitter: args.twitter || '',
     whatsapp: args.whatsapp || ''
   },
-  profile_image: args.profileImage || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
+  user_image_url: args.profileImage || 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400',
 });
 
 /**

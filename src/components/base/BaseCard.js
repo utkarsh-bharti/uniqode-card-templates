@@ -377,13 +377,17 @@ export class BaseCard extends HTMLElement {
   handleContactClick(type, value, label) {
     const detail = { type, value, label };
     
+    console.log(`%c[LIBRARY] 📱 Contact click triggered:`, 'color: #3b82f6; font-weight: bold', detail);
+    
     // Emit event - consumer can preventDefault()
     const shouldContinue = this.emitEvent('contact-click', detail);
     
     if (!shouldContinue) {
+      console.log(`%c[LIBRARY] 🚫 Default action prevented by consumer`, 'color: #ef4444; font-weight: bold');
       return; // Consumer prevented default action
     }
     
+    console.log(`%c[LIBRARY] ✅ Executing default action for ${type}`, 'color: #3b82f6; font-weight: bold');
     // Default behavior if consumer doesn't prevent
     this.defaultContactAction(type, value);
   }
@@ -478,12 +482,16 @@ export class BaseCard extends HTMLElement {
   handleSocialClick(platform, url) {
     const detail = { platform, url };
     
+    console.log(`%c[LIBRARY] 🔗 Social click triggered:`, 'color: #3b82f6; font-weight: bold', detail);
+    
     const shouldContinue = this.emitEvent('social-click', detail);
     
     if (!shouldContinue) {
+      console.log(`%c[LIBRARY] 🚫 Default action prevented by consumer`, 'color: #ef4444; font-weight: bold');
       return;
     }
     
+    console.log(`%c[LIBRARY] ✅ Opening social link`, 'color: #3b82f6; font-weight: bold');
     // Default: open in new tab
     window.open(url, '_blank', 'noopener,noreferrer');
   }

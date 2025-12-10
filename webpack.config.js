@@ -1,5 +1,6 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,7 +11,7 @@ export default {
     // Main bundle with CardLayout12
     index: './src/index.js',
     // Individual component bundle
-    'card-layout-12': './src/components/card-layout-12/CardLayout12.js'
+    'card-layout-12': './src/components/premium/card-layout-12/CardLayout12.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -20,7 +21,8 @@ export default {
     },
     clean: {
       keep: /\.d\.ts$/,  // Keep TypeScript definition files
-    }
+    },
+    assetModuleFilename: 'assets/[name][ext]'
   },
   experiments: {
     outputModule: true
@@ -36,9 +38,24 @@ export default {
             presets: ['@babel/preset-env']
           }
         }
-      }
+      },
     ]
   },
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: 'src/index.d.ts',
+          to: 'index.d.ts',
+          info: { minimized: true }
+        },
+        {
+          from: 'src/types',
+          to: 'types'
+        }
+      ],
+    }),
+  ],
   optimization: {
     splitChunks: false // Keep each bundle separate
   },

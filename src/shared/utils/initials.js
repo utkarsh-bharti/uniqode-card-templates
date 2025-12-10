@@ -15,7 +15,7 @@ export function getInitials(firstName = '', lastName = '') {
   const last = (lastName || '').toString().trim();
   
   if (!first && !last) {
-    return 'UN'; // Default for "Uniqode"
+    return ''; 
   }
   
   // Get first character of each name

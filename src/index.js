@@ -6,8 +6,8 @@
  * @author Uniqode Team
  */
 
-// Import component
-import { CardLayout12 } from './components/card-layout-12/CardLayout12.js';
+// Import components (organized by tier)
+import { CardLayout12 } from './components/premium/card-layout-12/CardLayout12.js';
 
 // Import base class
 import { BaseCard } from './components/base/BaseCard.js';

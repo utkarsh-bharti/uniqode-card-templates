@@ -35,6 +35,38 @@ yarn add @uniqode/card-templates
 pnpm add @uniqode/card-templates
 ```
 
+## ⚙️ Shadow DOM Configuration
+
+The library uses Shadow DOM for perfect style encapsulation. Choose the mode based on your environment:
+
+- **`closed` (default)**: Web frameworks (React, Angular, Vue) - Maximum encapsulation
+- **`open`**: Server environments with analytics (Django, Express) - Allows tracking
+
+### For Web Frameworks (Default - No Config Needed)
+
+```typescript
+// Just import and use - defaults to 'closed' mode
+import '@uniqode/card-templates';
+```
+
+### For Server Environments (With Analytics)
+
+```html
+<head>
+    <!-- ⚠️ CRITICAL: Set BEFORE loading components -->
+    <script>
+        window.UniqodeCardConfig = { shadowMode: 'open' };
+    </script>
+    
+    <!-- Then load components -->
+    <script type="module" src="/static/js/card-layout-12.js"></script>
+</head>
+```
+
+📚 **[Full Shadow DOM Configuration Guide →](./SHADOW_DOM_CONFIGURATION.md)**
+
+---
+
 ## 🚀 Quick Start
 
 ### Vanilla JavaScript / HTML
@@ -51,18 +83,18 @@ pnpm add @uniqode/card-templates
   <script>
     // Wait for component to be defined
     customElements.whenDefined('uniqode-layout-12').then(() => {
-      const card = document.getElementById('myCard');
+    const card = document.getElementById('myCard');
       
       // Set data via property (recommended)
-      card.cardData = {
-        first_name: 'John',
-        last_name: 'Doe',
-        designation: 'Software Engineer',
-        company: 'Tech Corp',
-        email_v2: [{ value: 'john@techcorp.com', label: 'Work' }],
-        phone_v2: [{ value: '+1 (555) 123-4567', label: 'Mobile' }],
+    card.cardData = {
+      first_name: 'John',
+      last_name: 'Doe',
+      designation: 'Software Engineer',
+      company: 'Tech Corp',
+      email_v2: [{ value: 'john@techcorp.com', label: 'Work' }],
+      phone_v2: [{ value: '+1 (555) 123-4567', label: 'Mobile' }],
         user_image_url: 'https://i.pravatar.cc/300',
-        customizations: {
+      customizations: {
           background_color: '#131A40',
           primary_color: '#84E9F1',
           button_color: '#6366F1'
